@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using Umbraco.Core.Models;
 using Umbraco.Web.Mvc;
+using Umbraco.Web;
 using System.Runtime.Caching;
 
 namespace FionaWhitfieldArt.Controllers
@@ -17,6 +18,11 @@ namespace FionaWhitfieldArt.Controllers
         public ActionResult RenderIntro()
         {
             return PartialView(PARTIAL_VIEW_FOLDER + "_Intro.cshtml");
+        }
+
+        public ActionResult RenderTitleControls()
+        {
+            return PartialView(PARTIAL_VIEW_FOLDER + "_TitleControls.cshtml");
         }
 
         public ActionResult RenderFooter()
@@ -42,9 +48,7 @@ namespace FionaWhitfieldArt.Controllers
         /// <returns>A List of NavigationListItems, representing the structure of the site.</returns>
         private List<NavigationListItem> GetNavigationModelFromDatabase()
         {
-            const int HOME_PAGE_POSITION_IN_PATH = 1;
-            int homePageId = int.Parse(CurrentPage.Path.Split(',')[HOME_PAGE_POSITION_IN_PATH]);
-            IPublishedContent homePage = Umbraco.Content(homePageId);
+            IPublishedContent homePage = CurrentPage.AncestorOrSelf(1).DescendantsOrSelf().Where(x => x.DocumentTypeAlias == "home").FirstOrDefault();
             List<NavigationListItem> nav = new List<NavigationListItem>();
             nav.Add(new NavigationListItem(new NavigationLink(homePage.Url, homePage.Name)));
             nav.AddRange(GetChildNavigationList(homePage));
@@ -56,10 +60,10 @@ namespace FionaWhitfieldArt.Controllers
         /// </summary>
         /// <param name="page">The parent page which you want the child structure for</param>
         /// <returns>A List of NavigationListItems, representing the structure of the pages below a page.</returns>
-        private List<NavigationListItem> GetChildNavigationList(dynamic page)
+        private List<NavigationListItem> GetChildNavigationList(IPublishedContent page)
         {
             List<NavigationListItem> listItems = null;
-            var childPages = page.Children.Where("Visible");
+            var childPages = page.Children.Where("Visible").Where(x => !x.HasValue("excludeFromTopNavigation") || (x.HasValue("excludeFromTopNavigation") && !x.GetPropertyValue<bool>("excludeFromTopNavigation")));
             if(childPages != null && childPages.Any() && childPages.Count() > 0)
             {
                 listItems = new List<NavigationListItem>();
