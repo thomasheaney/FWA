@@ -457,7 +457,7 @@
     <Content Include="Views\Partials\SiteLayout\_Intro.cshtml" />
     <Content Include="Views\Partials\Home\_Services.cshtml" />
     <Content Include="Views\Partials\Home\_Blog.cshtml" />
-    <Content Include="Views\Partials\Home\_Clients.cshtml" />
+    <Content Include="Views\Partials\Home\_Testimonials.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\BlogController.cs" />
@@ -465,6 +465,7 @@
     <Compile Include="Controllers\SiteLayoutController.cs" />
     <Compile Include="Models\BlogPreview.cs" />
     <Compile Include="Models\FeaturedItem.cs" />
+    <Compile Include="Models\Testimonial.cs" />
     <Compile Include="Models\Testimonials.cs" />
     <Compile Include="Models\LatestBlogPosts.cs" />
     <Compile Include="Models\NavigationLink.cs" />

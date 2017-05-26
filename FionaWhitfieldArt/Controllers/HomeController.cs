@@ -14,6 +14,7 @@ namespace FionaWhitfieldArt.Controllers
     public class HomeController : SurfaceController
     {
         private const string PARTIAL_VIEW_FOLDER = "~/Views/Partials/Home/";
+        private const int MAXIMUN_TESTIMONIALS = 4;
 
         public ActionResult RenderFeatured()
         {
@@ -58,15 +59,29 @@ namespace FionaWhitfieldArt.Controllers
             return PartialView(PARTIAL_VIEW_FOLDER + "_Blog.cshtml", model);
         }
 
-        public ActionResult RenderClients()
+        public ActionResult RenderTestimonials()
         {
             IPublishedContent homePage = CurrentPage.AncestorOrSelf("home");
 
             string title = homePage.GetPropertyValue<string>("testimonialsTitle");
             string introduction = homePage.GetPropertyValue("testimonialsIntroduction").ToString();
 
-            Testimonials model = new Testimonials(title, introduction);
-            return PartialView(PARTIAL_VIEW_FOLDER + "_Clients.cshtml", model);
+            List<Testimonial> testimonialList = new List<Testimonial>();
+
+            Testimonials model = new Testimonials(title, introduction, testimonialList);
+
+            ArchetypeModel archetypeTestimonialList = homePage.GetPropertyValue<ArchetypeModel>("testimonialList");
+            if (archetypeTestimonialList != null)
+            {
+                foreach (ArchetypeFieldsetModel testimonial in archetypeTestimonialList.Take(MAXIMUN_TESTIMONIALS))
+                {
+                    string name = testimonial.GetValue<string>("name");
+                    string quote = testimonial.GetValue<string>("quote");
+                    testimonialList.Add(new Testimonial(quote, name));
+
+                }
+            }
+            return PartialView(PARTIAL_VIEW_FOLDER + "_Testimonials.cshtml", model);
         }
 
 
