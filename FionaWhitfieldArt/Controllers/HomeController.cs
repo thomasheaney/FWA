@@ -13,13 +13,18 @@ namespace FionaWhitfieldArt.Controllers
 {
     public class HomeController : SurfaceController
     {
-        private const string PARTIAL_VIEW_FOLDER = "~/Views/Partials/Home/";
+
+        private string PartialViewPath(string name)
+        {
+            return "~/Views/Partials/Home/" + name +".cshtml";
+        }
+
         private const int MAXIMUN_TESTIMONIALS = 4;
 
         public ActionResult RenderFeatured()
         {
             List<FeaturedItem> model = new List<FeaturedItem>();
-            IPublishedContent homePage = CurrentPage.AncestorOrSelf(1).DescendantsOrSelf().Where(x => x.DocumentTypeAlias == "home").FirstOrDefault();
+            IPublishedContent homePage = CurrentPage.AncestorOrSelf("home");
             ArchetypeModel featuredItems = homePage.GetPropertyValue<ArchetypeModel>("featuredItems");
 
             foreach (ArchetypeFieldsetModel fieldSet in featuredItems)
@@ -40,12 +45,12 @@ namespace FionaWhitfieldArt.Controllers
                 model.Add(new FeaturedItem(fieldSet.GetValue<string>("name"),fieldSet.GetValue<string>("category"), imageUrl, linkUrl));
             }
 
-            return PartialView(PARTIAL_VIEW_FOLDER  + "_Featured.cshtml", model);
+            return PartialView(PartialViewPath("_Featured"), model);
         }
 
         public ActionResult RenderServices()
         {
-            return PartialView(PARTIAL_VIEW_FOLDER + "_Services.cshtml");
+            return PartialView(PartialViewPath("_Services"));
         }
 
         public ActionResult RenderBlog()
@@ -56,7 +61,7 @@ namespace FionaWhitfieldArt.Controllers
             string introduction = homePage.GetPropertyValue("latestBlogPostsintroduction").ToString();
 
             LatestBlogPosts model = new LatestBlogPosts(title, introduction);
-            return PartialView(PARTIAL_VIEW_FOLDER + "_Blog.cshtml", model);
+            return PartialView(PartialViewPath("_Blog"), model);
         }
 
         public ActionResult RenderTestimonials()
@@ -81,7 +86,7 @@ namespace FionaWhitfieldArt.Controllers
 
                 }
             }
-            return PartialView(PARTIAL_VIEW_FOLDER + "_Testimonials.cshtml", model);
+            return PartialView(PartialViewPath("_Testimonials"), model);
         }
 
 

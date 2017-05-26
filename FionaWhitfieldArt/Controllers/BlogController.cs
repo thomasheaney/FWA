@@ -12,12 +12,16 @@ namespace FionaWhitfieldArt.Controllers
 {
     public class BlogController :SurfaceController
     {
-        private const string PARTIAL_VIEW_FOLDER = "~/Views/Partials/Blog/";
+        private string PartialViewPath(string name)
+        {
+            return "~/Views/Partials/Blog/" + name + ".cshtml";
+        }
 
         public ActionResult RenderPostList(int numberOfItems)
         {
+            IPublishedContent homePage = CurrentPage.AncestorOrSelf("home");
             List<BlogPreview> model = new List<BlogPreview>();
-            IPublishedContent blogPage = CurrentPage.AncestorOrSelf(1).DescendantsOrSelf().Where(x => x.DocumentTypeAlias == "blog").FirstOrDefault();
+            IPublishedContent blogPage = homePage.Children.Where(x => x.DocumentTypeAlias == "blog").FirstOrDefault();
 
             foreach (IPublishedContent page in blogPage.Children.OrderByDescending( x => x.UpdateDate).Take(numberOfItems))
             {
@@ -26,7 +30,7 @@ namespace FionaWhitfieldArt.Controllers
                 model.Add(new BlogPreview(page.Name, page.GetPropertyValue<string>("articleIntro"), mediaItem.Url, page.Url));
             }
 
-            return PartialView(PARTIAL_VIEW_FOLDER + "_PostList.cshtml", model);
+            return PartialView(PartialViewPath("_PostList"), model);
         }
 
     }
