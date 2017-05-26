@@ -328,6 +328,13 @@
     <Content Include="config\imageprocessor\security.config" />
     <Content Include="config\imageprocessor\processing.config" />
     <Content Include="config\imageprocessor\cache.config" />
+    <None Include="scripts\jquery.validate-vsdoc.js" />
+    <Content Include="scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="scripts\jquery.validate.js" />
+    <Content Include="scripts\jquery.validate.min.js" />
+    <Content Include="scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Partials\Grid\Editors\Textstring.cshtml" />
     <Content Include="Views\Partials\Grid\Editors\Rte.cshtml" />
@@ -389,6 +396,10 @@
     <Content Include="Views\Services.cshtml" />
     <Content Include="Views\Partials\SiteLayout\_TitleControls.cshtml" />
     <Content Include="Views\Partials\Blog\_PostList.cshtml" />
+    <Content Include="Views\BlogPost.cshtml" />
+    <Content Include="Views\Search.cshtml" />
+    <Content Include="Views\Partials\Search\_SearchForm.cshtml" />
+    <Content Include="Views\Partials\Search\_SearchResults.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -462,9 +473,15 @@
   <ItemGroup>
     <Compile Include="Controllers\BlogController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\SiteLayoutController.cs" />
+    <Compile Include="Helpers\SearchHelper.cs" />
     <Compile Include="Models\BlogPreview.cs" />
     <Compile Include="Models\FeaturedItem.cs" />
+    <Compile Include="Models\PagingBoundsModel.cs" />
+    <Compile Include="Models\SeachResultsModel.cs" />
+    <Compile Include="Models\SearchGroup.cs" />
+    <Compile Include="Models\SearchViewModel.cs" />
     <Compile Include="Models\Testimonial.cs" />
     <Compile Include="Models\Testimonials.cs" />
     <Compile Include="Models\LatestBlogPosts.cs" />
