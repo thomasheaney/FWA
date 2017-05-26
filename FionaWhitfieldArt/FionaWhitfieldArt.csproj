@@ -466,7 +466,6 @@
     <Content Include="Views\Partials\SiteLayout\_Footer.cshtml" />
     <Content Include="Views\Partials\Home\_Featured.cshtml" />
     <Content Include="Views\Partials\SiteLayout\_Intro.cshtml" />
-    <Content Include="Views\Partials\Home\_Services.cshtml" />
     <Content Include="Views\Partials\Home\_Blog.cshtml" />
     <Content Include="Views\Partials\Home\_Testimonials.cshtml" />
   </ItemGroup>
@@ -477,19 +476,22 @@
     <Compile Include="Controllers\SiteLayoutController.cs" />
     <Compile Include="Helpers\SearchHelper.cs" />
     <Compile Include="Models\BlogPreview.cs" />
-    <Compile Include="Models\FeaturedItem.cs" />
     <Compile Include="Models\PagingBoundsModel.cs" />
     <Compile Include="Models\SeachResultsModel.cs" />
     <Compile Include="Models\SearchGroup.cs" />
     <Compile Include="Models\SearchViewModel.cs" />
     <Compile Include="Models\Testimonial.cs" />
     <Compile Include="Models\Testimonials.cs" />
-    <Compile Include="Models\LatestBlogPosts.cs" />
     <Compile Include="Models\NavigationLink.cs" />
     <Compile Include="Models\NavigationListItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\FionaWhitfieldArt.Library\FionaWhitfieldArt.Library.csproj">
+      <Project>{aecfcd9b-47a7-42aa-8287-5a7c01502edd}</Project>
+      <Name>FionaWhitfieldArt.Library</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

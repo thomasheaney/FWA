@@ -4,17 +4,19 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Umbraco.Web.Mvc;
-using FionaWhitfieldArt.Models;
 using Umbraco.Web;
 using Umbraco.Core.Models;
 using Archetype.Models;
+using FionaWhitfieldArt.Models;
+using FionaWhitfieldArt.Library.Models;
+using FionaWhitfieldArt.Library.Helpers;
 
 namespace FionaWhitfieldArt.Controllers
 {
     public class HomeController : SurfaceController
     {
 
-        private string PartialViewPath(string name)
+        private string GetViewPath(string name)
         {
             return "~/Views/Partials/Home/" + name +".cshtml";
         }
@@ -23,46 +25,21 @@ namespace FionaWhitfieldArt.Controllers
 
         public ActionResult RenderFeatured()
         {
-            List<FeaturedItem> model = new List<FeaturedItem>();
-            IPublishedContent homePage = CurrentPage.AncestorOrSelf("home");
-            ArchetypeModel featuredItems = homePage.GetPropertyValue<ArchetypeModel>("featuredItems");
+            HomeHelper homeHelper = new HomeHelper(CurrentPage, new UmbracoHelper(UmbracoContext.Current));
+            List<FeaturedItem> model = homeHelper.GetFeaturedItemsModel();
 
-            foreach (ArchetypeFieldsetModel fieldSet in featuredItems)
-            {
-                /*****************************************************
-                 *  Published code doesn't work with this version of Umbraco/Archetype
-                 * string imageID = fieldSet.GetValue<string>("image");
-                var mediaItem = Umbraco.Media(imageID);
-                string imageUrl = mediaItem.Url;
-
-                string pageId = fieldSet.GetValue<string>("page");
-                IPublishedContent linkedToPage = Umbraco.TypedContent(pageId);
-                string linkUrl = linkedToPage.Url;*/
-
-                string imageUrl = fieldSet.GetValue<IPublishedContent>("image").Url;
-                string linkUrl = fieldSet.GetValue<IPublishedContent>("page").Url;
-
-                model.Add(new FeaturedItem(fieldSet.GetValue<string>("name"),fieldSet.GetValue<string>("category"), imageUrl, linkUrl));
-            }
-
-            return PartialView(PartialViewPath("_Featured"), model);
+            return PartialView(GetViewPath("_Featured"), model);
         }
-
-        public ActionResult RenderServices()
-        {
-            return PartialView(PartialViewPath("_Services"));
-        }
+  
 
         public ActionResult RenderBlog()
         {
-            IPublishedContent homePage = CurrentPage.AncestorOrSelf("home");
-
-            string title = homePage.GetPropertyValue<string>("latestBlogPostsTitle");
-            string introduction = homePage.GetPropertyValue("latestBlogPostsintroduction").ToString();
-
-            LatestBlogPosts model = new LatestBlogPosts(title, introduction);
-            return PartialView(PartialViewPath("_Blog"), model);
+            HomeHelper homeHelper = new HomeHelper(CurrentPage, new UmbracoHelper(UmbracoContext.Current));
+            LatestBlogPosts model = homeHelper.GetLatestBlogPosts();
+            return PartialView(GetViewPath("_Blog"), model);
         }
+
+        
 
         public ActionResult RenderTestimonials()
         {
@@ -86,7 +63,7 @@ namespace FionaWhitfieldArt.Controllers
 
                 }
             }
-            return PartialView(PartialViewPath("_Testimonials"), model);
+            return PartialView(GetViewPath("_Testimonials"), model);
         }
 
 

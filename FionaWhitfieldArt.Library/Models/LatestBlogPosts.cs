@@ -1,4 +1,4 @@
-﻿namespace FionaWhitfieldArt.Models
+﻿namespace FionaWhitfieldArt.Library.Models
 {
     public class LatestBlogPosts
     {
